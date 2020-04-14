@@ -1,0 +1,60 @@
+<html>
+    <header>
+        <link href='node_modules/@fullcalendar/core/main.css' rel='stylesheet' />
+        <link href='node_modules/@fullcalendar/timeline/main.css' rel='stylesheet' />
+        <link href='node_modules/@fullcalendar/resource-timeline/main.css' rel='stylesheet' />
+        <script src='node_modules/@fullcalendar/core/main.js'></script>
+        <script src='node_modules/@fullcalendar/timeline/main.js'></script>
+        <script src='node_modules/@fullcalendar/resource-common/main.js'></script>
+        <script src='node_modules/@fullcalendar/resource-timeline/main.js'></script>
+    </header>
+    <head>
+        Hotel Shift Viewer
+    </head>
+    <body>
+        <div id='calendar'>
+        </div> 
+    </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    plugins: [ 'resourceTimeline' ],
+    header: {
+      left: 'today prev,next',
+      center: 'title',
+      right: 'resourceTimelineDay,resourceTimelineWeek'
+    },
+    aspectRatio: 1.6,
+    defaultView: 'resourceTimelineDay',
+    resourceGroupField: 'department',
+    resourceColumns: [{
+        labelText: "First",
+        field: 'fname'
+    },
+    {
+        labelText: "Last",
+        field: 'lname'
+    }],
+    resources: [
+      { id: '1', department: 'Department A', fname: 'Alex', lname: 'Cross'},
+      { id: '2', department: 'Department A', fname: 'Alice', lname: 'Jones' },
+      { id: '3', department: 'Department A', fname: 'Bob', lname: 'Bobson' },
+      { id: '4', department: 'Department A', fname: 'Charles', lname: 'Day' },
+      { id: '5', department: 'Department A', fname: 'Daniel', lname: 'Smith' },
+      { id: '6', department: 'Department A', fname: 'Eric', lname: 'Jones' },
+      { id: '7', department: 'Department B', fname: 'Fannie', lname: 'Bottoms' },
+      { id: '8', department: 'Department B', fname: 'Greg', lname: 'Smith' },
+      { id: '9', department: 'Department B', fname: 'Hillary', lname: 'Swank' },
+      { id: '10', department: 'Department B', fname: 'Jackie', lname: 'Weathers' },
+      { id: '11', department: 'Department C', fname: 'Elizabeth', lname: 'Keen' },
+      { id: '12', department: 'Department C', fname: 'Rebecca', lname: 'Bunch' },
+      { id: '13', department: 'Department C', fname: 'Valenica', lname: 'Suarez' },
+      { id: '14', department: 'Department C', fname: 'Jim', lname: 'Davis' }
+    ]
+  });
+  calendar.render();
+});
+    </script>        
+</html>
