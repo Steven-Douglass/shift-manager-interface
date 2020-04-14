@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class='container'>
-      <h1>Dashboard</h1>
+      <h1>Schedule</h1>
     </div>
   </body>
 

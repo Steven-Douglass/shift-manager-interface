@@ -7,9 +7,9 @@
   <body>
     <header>
       <div id="navbar">
-        <p>View Schedule</p>
-	<p>Settings</p>
-	<p><a href='./index.html'>Logout</a></p>
+        <a href='./schedule.php'>Schedule</a>
+	<a href='./settings.php'>Settings</a>
+	<a href='./index.html'>Logout</a>
       </div>
   </header>
   </body>
