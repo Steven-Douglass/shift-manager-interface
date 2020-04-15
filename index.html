@@ -20,6 +20,17 @@
   var calendarEl = document.getElementById('calendar');
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
+      events: [
+      {
+        id: 'example_id',
+        title: 'example',
+        start: '2020-04-15',
+        end: '2020-04-15',
+        startTime: '08:00:00',
+        endTime: '16:00:00',
+        resourceId: '1'
+      }
+    ],
     plugins: [ 'resourceTimeline' ],
     header: {
       left: 'today prev,next',
