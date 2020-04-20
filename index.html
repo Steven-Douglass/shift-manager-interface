@@ -7,30 +7,81 @@
         <script src='node_modules/@fullcalendar/timeline/main.js'></script>
         <script src='node_modules/@fullcalendar/resource-common/main.js'></script>
         <script src='node_modules/@fullcalendar/resource-timeline/main.js'></script>
+        <link rel='stylesheet'
+          href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' />
+          <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+          <!-- BEGIN: KOALA MODIFICATIONS -->
+          <script type="text/javascript"
+              src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+          <!-- END: KOALA MODIFICATIONS -->
     </header>
     <head>
         Hotel Shift Viewer
     </head>
     <body>
         <div id='calendar'>
-        </div> 
+        </div>
+
+        <div align="left" id="dialog-confirm" title="Shift Information" style="display:none">
+          <div class="form-group row">
+            <label for="date" class="col-sm-2 col-form-label">Date:</label>
+            <div class="col-sm-10">
+              <input type="text" id="date" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="start" class="col-sm-2 col-form-label">Start Time:</label>
+            <div class="col-sm-10">
+              <input type="text" id="start-time" name="start" required>
+            </div>
+          </div>
+          <div class="form-group row">
+              <label for="end" class="col-sm-2 col-form-label">End Time:</label>
+              <div class="col-sm-10">
+                <input type="text" id="end-time" name="end" required></select>
+              </div>
+          </div>
+
+            <!-- <input type="text" id="dtopID" style="display: none" disabled> -->
+            <!-- <p><span class="ui-icon ui-icon-info" style="float:left; margin:12px 12px 20px 0;"></span>What would you like to do with this time?</p> -->
+        </div>
     </body>
     <script>
+    
         document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
-      events: [
+    events: [
       {
-        id: 'example_id',
-        title: 'example',
-        start: '2020-04-15',
-        end: '2020-04-15',
-        startTime: '08:00:00',
-        endTime: '16:00:00',
-        resourceId: '1'
+        random: '2020-04-20',
+        id: 'example_id', // Should be the shift_id from database
+        title: 'example', // Displays on the event
+        start: '2020-04-20T08:00:00', // YYYY-MM-DD T HH:MM:SS
+        end: '2020-04-20T16:00:00',
+        resourceId: '1', // should be the employee ID
+        
       }
     ],
+    eventClick: function (event, element) {
+      let str = FullCalendar.formatDate(event.event.start, {
+        month: "2-digit",  //FullCalendar Formatter
+        day: "2-digit",
+        year: "numeric"
+      });
+      document.getElementById('date').value = str;
+      str = FullCalendar.formatDate(event.event.start, {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+      document.getElementById('start-time').value = str;
+      str = FullCalendar.formatDate(event.event.end, {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+      document.getElementById('end-time').value = str;
+        $("#dialog-confirm").dialog("open"); // Shows the Shift Information Dialog Box
+      },
     plugins: [ 'resourceTimeline' ],
     header: {
       left: 'today prev,next',
@@ -67,5 +118,32 @@
   });
   calendar.render();
 });
+
+$("#dialog-confirm").dialog({
+    resizable: false,
+    height: "auto",
+    width: "450",
+    autoOpen: false,
+    modal: true,
+    focus: false,
+    clostText: 'hide',
+    buttons: [{
+      id: "btnSave",
+      text: "Save",
+      /* icon: "ui-icon-plus", */
+      click: function () {
+        $(this).dialog("close");
+      }
+    },
+    {
+      id: "btnDelete",
+      text: "Delete",
+      /* icon: "ui-icon-plus", */
+      click: function () {
+        $(this).dialog("close");
+      }
+    }
+    ]
+  });
     </script>        
 </html>
