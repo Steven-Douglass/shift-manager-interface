@@ -1,0 +1,329 @@
+<html>
+    <header>
+        <link href='node_modules/@fullcalendar/core/main.css' rel='stylesheet' />
+        <link href='node_modules/@fullcalendar/timeline/main.css' rel='stylesheet' />
+        <link href='node_modules/@fullcalendar/resource-timeline/main.css' rel='stylesheet' />
+        <script src='node_modules/@fullcalendar/core/main.js'></script>
+        <script src='node_modules/@fullcalendar/timeline/main.js'></script>
+        <script src='node_modules/@fullcalendar/resource-common/main.js'></script>
+        <script src='node_modules/@fullcalendar/resource-timeline/main.js'></script>
+        <script src='node_modules/@fullcalendar/interaction/main.js'></script>
+        <script language="JavaScript" type="text/javascript"
+          src="https://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js">  // jwt decoder
+        </script>
+        <link rel='stylesheet'
+          href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' />
+          <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+          <!-- BEGIN: KOALA MODIFICATIONS -->
+          <script type="text/javascript"
+              src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+          <!-- END: KOALA MODIFICATIONS -->
+    </header>
+    <head>
+        Hotel Shift Viewer
+    </head>
+    <body>
+        <div id='calendar'>
+        </div>
+
+        <!-- Edit Shift Modal -->
+        <div align="left" id="dialog-confirm" title="Shift Information" style="display:none">
+          <div class="form-group row">
+            <label for="start-date" class="col-sm-2 col-form-label">Start Date:</label>
+            <div class="col-sm-10">
+              <input type="text" id="start-date">
+            </div>
+            <label for="end-date" class="col-sm-2 col-form-label">End Date:</label>
+            <div class="col-sm-10">
+              <input type="text" id="end-date">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="start" class="col-sm-2 col-form-label">Start Time:</label>
+            <div class="col-sm-10">
+              <input type="text" id="start-time" name="start" required>
+            </div>
+          </div>
+          <div class="form-group row">
+              <label for="end" class="col-sm-2 col-form-label">End Time:</label>
+              <div class="col-sm-10">
+                <input type="text" id="end-time" name="end" required></select>
+              </div>
+          </div>
+        </div>
+
+        <!-- Create Shift Modal -->
+        <div align="left" id="dialog-confirm2" title="Shift Information" style="display:none">
+          <div class="form-group row">
+            <label for="start-date2" class="col-sm-2 col-form-label">Start Date:</label>
+            <div class="col-sm-10">
+              <input type="text" id="start-date2">
+            </div>
+            <label for="end-date2" class="col-sm-2 col-form-label">End Date:</label>
+            <div class="col-sm-10">
+              <input type="text" id="end-date2">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="start2" class="col-sm-2 col-form-label">Start Time:</label>
+            <div class="col-sm-10">
+              <input type="text" id="start-time2" name="start2" required>
+            </div>
+          </div>
+          <div class="form-group row">
+              <label for="end2" class="col-sm-2 col-form-label">End Time:</label>
+              <div class="col-sm-10">
+                <input type="text" id="end-time2" name="end2" required></select>
+              </div>
+          </div>
+        </div>
+
+    </body>
+    <script>
+    var calendar;
+    var currentEvent;
+    var urlParams = new URLSearchParams(window.location.search);
+    let depID = urlParams.get("managerID");
+    var payload = KJUR.jws.JWS.readSafeJSONString(b64utoutf8(depID.split(".")[1])); //jwt decode
+    console.log(payload["deptId"]);
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+
+      calendar = new FullCalendar.Calendar(calendarEl, {
+    eventSources: [
+      {
+        url: './api/get_shifts.php',
+        method: 'POST',
+        extraParams: {
+        manager_id: payload["deptId"]      
+        }
+      }
+    ],
+    eventClick: function (event) {
+      currentEvent = event.event.id;
+      let str = FullCalendar.formatDate(event.event.start, {
+        month: "2-digit",  //FullCalendar Formatter
+        day: "2-digit",
+        year: "numeric"
+      });
+      document.getElementById('start-date').value = str; // set start date
+      str = FullCalendar.formatDate(event.event.end, {
+        month: "2-digit",  //FullCalendar Formatter
+        day: "2-digit",
+        year: "numeric"
+      });
+      document.getElementById('end-date').value = str; // set end date
+      str = FullCalendar.formatDate(event.event.start, {
+        hour: "2-digit",  //FullCalendar Formatter
+        minute: "2-digit"
+      });
+      document.getElementById('start-time').value = str; //set start time
+      str = FullCalendar.formatDate(event.event.end, {
+        hour: "2-digit",  //FullCalendar Formatter
+        minute: "2-digit"
+      });
+      document.getElementById('end-time').value = str; // set end time
+        $("#dialog-confirm").dialog("open"); // Shows the Shift Information Dialog Box
+      },
+    plugins: [ 'resourceTimeline', 'interaction' ],
+    header: {
+      left: 'title',
+      center: 'resourceTimelineDay,resourceTimelineWeek today prev,next ',
+      right: ''
+    },
+    slotDuration: "00:15:00",
+    selectable: true,
+    selectOverlap: false,
+    /* selectable functionality */
+    select: function(info) {
+      let str = FullCalendar.formatDate(info.start, {
+        month: "2-digit",  //FullCalendar Formatter
+        day: "2-digit",
+        year: "numeric"
+      });
+      document.getElementById('start-date2').value = str; // set start date
+      str = FullCalendar.formatDate(info.end, {
+        month: "2-digit",  //FullCalendar Formatter
+        day: "2-digit",
+        year: "numeric"
+      });
+      document.getElementById('end-date2').value = str; // set end date
+      str = FullCalendar.formatDate(info.start, {
+        hour: "2-digit",  //FullCalendar Formatter
+        minute: "2-digit"
+      });
+      document.getElementById('start-time2').value = str; //set start time
+      str = FullCalendar.formatDate(info.end, {
+        hour: "2-digit",  //FullCalendar Formatter
+        minute: "2-digit"
+      });
+      document.getElementById('end-time2').value = str; // set end time
+        $("#dialog-confirm2").dialog("open"); // Shows the Shift Information Dialog Box
+      },
+    aspectRatio: 1.6,
+    slotWidth: 20,
+    resourceAreaWidth: "15%",
+    contentHeight: 700,
+    defaultView: 'resourceTimelineDay',
+    resourceGroupField: 'department',
+    resourceColumns: [{
+        labelText: "First",
+        field: 'fname'
+    },
+    {
+        labelText: "Last",
+        field: 'lname'
+    }],
+    resources:
+      {
+        url: './api/get_employees.php',
+        method: 'POST',
+        extraParams: {
+        manager_id: payload["deptId"]        
+      }
+      }
+  });
+  calendar.render();
+  
+});
+
+$("#dialog-confirm").dialog({
+    resizable: false,
+    height: "auto",
+    width: "450",
+    autoOpen: false,
+    modal: true,
+    focus: false,
+    clostText: 'hide',
+    buttons: [{
+      id: "btnSave",
+      text: "Save",
+      /* icon: "ui-icon-plus", */
+      click: function () {
+        updateShift(currentEvent);
+        currentEvent = null;
+        $(this).dialog("close");
+      }
+    },
+    {
+      id: "btnDelete",
+      text: "Delete",
+      /* icon: "ui-icon-plus", */
+      click: function () {
+        deleteShift(currentEvent);
+        currentEvent = null;
+        $(this).dialog("close");
+        
+      }
+    }
+    ]
+  });
+
+  function deleteShift(eventID){
+    console.log(eventID);
+    fetch('./api/delete_shift', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: $.param({
+        "shift_id" : eventID //POST info
+      })
+  }).then( function () {
+        redisplay();
+  });
+};
+
+$("#dialog-confirm2").dialog({
+    resizable: false,
+    height: "auto",
+    width: "450",
+    autoOpen: false,
+    modal: true,
+    focus: false,
+    clostText: 'hide',
+    buttons: [{
+      id: "btnSave",
+      text: "Save",
+      /* icon: "ui-icon-plus", */
+      click: function () {
+        updateShift(currentEvent);
+        currentEvent = null;
+        $(this).dialog("close");
+      }
+    },
+    {
+      id: "btnDelete",
+      text: "Delete",
+      /* icon: "ui-icon-plus", */
+      click: function () {
+        deleteShift(currentEvent);
+        currentEvent = null;
+        $(this).dialog("close");
+        
+      }
+    }
+    ]
+  });
+
+  function deleteShift(eventID){
+    console.log(eventID);
+    fetch('./api/delete_shift', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: $.param({
+        "shift_id" : eventID //POST info
+      })
+  }).then( function () {
+        redisplay();
+  });
+};
+
+function updateShift(eventID){
+  var new_sDate = formatDate($('#start-date').val()); // reformatting the dates & times
+  var new_eDate = formatDate($('#end-date').val());
+  var new_sTime = formatTime($('#start-time').val());
+  var new_eTime = formatTime($('#end-time').val());
+  fetch('./api/update_shift.php', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    body: $.param({
+      sDate: new_sDate,
+      eDate: new_eDate,
+      sTime: new_sTime, // POST data
+      eTime: new_eTime,
+      eventID: eventID,
+      modID: payload["id"]
+    })
+      }).then( function() {
+        redisplay();
+    })
+};
+
+function redisplay(){
+  calendar.refetchEvents();
+  calendar.render();
+};
+
+function formatTime(time){
+  var newTime = time.split(' ');
+  if(newTime[1].toUpperCase() == "PM"){
+    var timeSplit = newTime[0].split(':');
+    var hours = parseInt(timeSplit[0]) + 12; // convert to 24 hour time
+    return (hours+":"+timeSplit[1]+":00");
+  }
+  else{
+    return (newTime[0]+":00");
+  }
+};
+
+function formatDate(date){
+  var dateSplit = date.split("/");
+  return (dateSplit[2]+"-"+dateSplit[0]+"-"+dateSplit[1]);
+};
+    </script>    
+</html>
