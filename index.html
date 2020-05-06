@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <header>
         <link href='node_modules/@fullcalendar/core/main.css' rel='stylesheet' />
@@ -13,11 +14,17 @@
         </script>
         <link rel='stylesheet'
           href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' />
-          <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-          <!-- BEGIN: KOALA MODIFICATIONS -->
-          <script type="text/javascript"
-              src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-          <!-- END: KOALA MODIFICATIONS -->
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <!-- BEGIN: KOALA MODIFICATIONS -->
+        <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
+          integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <!-- END: KOALA MODIFICATIONS -->
     </header>
     <head>
         Hotel Shift Viewer
@@ -27,54 +34,70 @@
         </div>
 
         <!-- Edit Shift Modal -->
-        <div align="left" id="dialog-confirm" title="Shift Information" style="display:none">
-          <div class="form-group row">
-            <label for="start-date" class="col-sm-2 col-form-label">Start Date:</label>
-            <div class="col-sm-10">
-              <input type="text" id="start-date">
-            </div>
-            <label for="end-date" class="col-sm-2 col-form-label">End Date:</label>
-            <div class="col-sm-10">
-              <input type="text" id="end-date">
+        <div id="dialog-confirm" title="Shift Information" style="display:none">
+          <div class="row">
+            <div class="col">
+              <label for="emp-name">Emp. Name: </label>
+              <input type="text" id="emp-name" disabled>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="start" class="col-sm-2 col-form-label">Start Time:</label>
-            <div class="col-sm-10">
-              <input type="text" id="start-time" name="start" required>
+          <div class="row">
+            <div class="col">              
+              <label for="start-date">Start Date: </label>
+              <input type="text" id="start-date" maxlength="10" size="10">
+              <label for="start">Start Time:</label>              
+              <input type="text" id="start-time" name="start" maxlength="8" size="8" required>           
             </div>
           </div>
-          <div class="form-group row">
-              <label for="end" class="col-sm-2 col-form-label">End Time:</label>
-              <div class="col-sm-10">
-                <input type="text" id="end-time" name="end" required></select>
-              </div>
+          <div class="row">
+            <div class="col">
+              <label for="end-date">End Date: </label>
+              <input type="text" id="end-date"  maxlength="10" size="10">
+              <label for="end">End Time:</label>
+              <input type="text" id="end-time" name="end" maxlength="8" size="8" required></select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="jobCode">Job: </label>
+              <select type="text" id="jobCode" name="jobCode" ></select>
+              <label for="locCode">Loc: </label>
+              <select type="text" id="locCode" name="locCode" ></select>
+            </div>
           </div>
         </div>
 
         <!-- Create Shift Modal -->
-        <div align="left" id="dialog-confirm2" title="Shift Information" style="display:none">
-          <div class="form-group row">
-            <label for="start-date2" class="col-sm-2 col-form-label">Start Date:</label>
-            <div class="col-sm-10">
-              <input type="text" id="start-date2">
-            </div>
-            <label for="end-date2" class="col-sm-2 col-form-label">End Date:</label>
-            <div class="col-sm-10">
-              <input type="text" id="end-date2">
+        <div id="dialog-confirm2" title="Shift Information" style="display:none">
+          <div class="row">
+            <div class="col">
+              <label for="emp-name2">Emp. Name: </label>
+              <input type="text" id="emp-name2" disabled>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="start2" class="col-sm-2 col-form-label">Start Time:</label>
-            <div class="col-sm-10">
-              <input type="text" id="start-time2" name="start2" required>
+          <div class="row">
+            <div class="col">              
+              <label for="start-date2">Start Date: </label>
+              <input type="text" id="start-date2" maxlength="10" size="10">
+              <label for="start">Start Time:</label>              
+              <input type="text" id="start-time2" name="start" maxlength="8" size="8" required>           
             </div>
           </div>
-          <div class="form-group row">
-              <label for="end2" class="col-sm-2 col-form-label">End Time:</label>
-              <div class="col-sm-10">
-                <input type="text" id="end-time2" name="end2" required></select>
-              </div>
+          <div class="row">
+            <div class="col">
+              <label for="end-date">End Date: </label>
+              <input type="text" id="end-date2"  maxlength="10" size="10">
+              <label for="end">End Time:</label>
+              <input type="text" id="end-time2" name="end" maxlength="8" size="8" required></select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="jobCode">Job: </label>
+              <select type="text" id="jobCode2" name="jobCode" ></select>
+              <label for="locCode">Loc: </label>
+              <select type="text" id="locCode2" name="locCode"></select>
+            </div>
           </div>
         </div>
 
@@ -96,7 +119,8 @@
         method: 'POST',
         extraParams: {
         manager_id: payload["deptId"]      
-        }
+        },
+        textColor: "white"
       }
     ],
     eventClick: function (event) {
@@ -123,6 +147,10 @@
         minute: "2-digit"
       });
       document.getElementById('end-time').value = str; // set end time
+      let empName = getEmpNameByEvent(event.event);
+      document.getElementById('emp-name').value = empName;
+      populateJobCodes(event.event._def.resourceIds[0], event.event.extendedProps.job, "jobCode");
+      populateLocations("locCode", event.event.extendedProps.location);
         $("#dialog-confirm").dialog("open"); // Shows the Shift Information Dialog Box
       },
     plugins: [ 'resourceTimeline', 'interaction' ],
@@ -158,6 +186,9 @@
         minute: "2-digit"
       });
       document.getElementById('end-time2').value = str; // set end time
+      let empName = info.resource.extendedProps.fname+" "+info.resource.extendedProps.lname;
+      document.getElementById('emp-name2').value = empName;
+        populateJobCodes(info.resource.id, null, "jobCode2");
         $("#dialog-confirm2").dialog("open"); // Shows the Shift Information Dialog Box
       },
     aspectRatio: 1.6,
@@ -166,7 +197,7 @@
     contentHeight: 700,
     defaultView: 'resourceTimelineDay',
     resourceGroupField: 'department',
-    resourceColumns: [{
+    resourceColumns: [{       //resources area
         labelText: "First",
         field: 'fname'
     },
@@ -190,7 +221,7 @@
 $("#dialog-confirm").dialog({
     resizable: false,
     height: "auto",
-    width: "450",
+    width: "525",
     autoOpen: false,
     modal: true,
     focus: false,
@@ -237,7 +268,7 @@ $("#dialog-confirm").dialog({
 $("#dialog-confirm2").dialog({
     resizable: false,
     height: "auto",
-    width: "450",
+    width: "525",
     autoOpen: false,
     modal: true,
     focus: false,
@@ -324,6 +355,55 @@ function formatTime(time){
 function formatDate(date){
   var dateSplit = date.split("/");
   return (dateSplit[2]+"-"+dateSplit[0]+"-"+dateSplit[1]);
+};
+
+function getEmpNameByEvent(event){
+  let resources = event.getResources();
+  let empName = resources.map(function (resource) 
+    {return (resource.extendedProps.fname + " " + resource.extendedProps.lname)});
+  if (empName.length == 1){
+    return empName[0];
+  }
+  else{
+    alert("Emp Name failed to be found.");
+  }
+};
+
+function populateJobCodes(emp_id, job_id, el){
+  fetch('./api/populate_jobcodes.php', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: $.param({
+        "id" : emp_id //POST info
+      })
+        }).then(function (response) {
+          response.json().then(function (data) {
+            document.getElementById(el).options.length = 0; //reset the dropdown       
+            data.forEach(function (position) {
+              $('#'+el).append(new Option(position["Position_"], position["JobCode"]));
+            });
+            if (job_id != null)
+              $('#'+el).val(job_id); // set default to current job value
+  })});
+};
+
+function populateLocations(el, loc_id){
+  fetch('./api/populate_locations.php', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      }
+    }).then(function (response) {
+          response.json().then(function (data) {
+            document.getElementById(el).options.length = 0; //reset the dropdown      
+            data.forEach(function (location) {
+              $('#'+el).append(new Option(location["location_name"], location["location_id"]));
+            });
+            if (loc_id != null)
+              $('#'+el).val(loc_id); // set default to current location value
+  })});
 };
     </script>    
 </html>
