@@ -32,6 +32,9 @@
     <body>
         <div id='calendar'>
         </div>
+        <div class="col align-self-center">
+          <button onclick=showModal()>Advertise New Shift</button>
+        </div>
 
         <!-- Edit Shift Modal -->
         <div id="dialog-confirm" title="Shift Information" style="display:none">
@@ -97,6 +100,34 @@
               <select type="text" id="jobCode2" name="jobCode" ></select>
               <label for="locCode2">Loc: </label>
               <select type="text" id="locCode2" name="locCode"></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Create Empty Shift Modal -->
+        <div id="dialog-confirm3" title="Shift Information" style="display:none">
+          <div class="row">
+            <div class="col">              
+              <label for="start-date3">Start Date: </label>
+              <input type="text" id="start-date3" maxlength="10" size="10">
+              <label for="start">Start Time:</label>              
+              <input type="text" id="start-time3" name="start" maxlength="8" size="8" required>           
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="end-date3">End Date: </label>
+              <input type="text" id="end-date3"  maxlength="10" size="10">
+              <label for="end">End Time:</label>
+              <input type="text" id="end-time3" name="end" maxlength="8" size="8" required></select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="jobCode3">Job: </label>
+              <select type="text" id="jobCode3" name="jobCode3" ></select>
+              <label for="locCode3">Loc: </label>
+              <select type="text" id="locCode3" name="locCode3"></select>
             </div>
           </div>
         </div>
@@ -218,7 +249,7 @@
       }
   });
   calendar.render();
-  
+  populateBlankShiftDropdowns("jobCode3", "locCode3");
 });
 
 $("#dialog-confirm").dialog({
@@ -283,6 +314,26 @@ $("#dialog-confirm2").dialog({
       click: function () {
         createShift(currentEmp);
         currentEmp = null;
+        $(this).dialog("close");
+      }
+    }
+    ]
+  });
+
+  $("#dialog-confirm3").dialog({
+    resizable: false,
+    height: "auto",
+    width: "525",
+    autoOpen: false,
+    modal: true,
+    focus: false,
+    clostText: 'hide',
+    buttons: [{
+      id: "btnSave",
+      text: "Save",
+      /* icon: "ui-icon-plus", */
+      click: function () {
+        createEmptyShift();
         $(this).dialog("close");
       }
     }
@@ -403,7 +454,6 @@ function populateLocations(el, loc_id){
 };
 
 function createShift(thisEmp){
-  console.log(thisEmp)
   var new_sDate = formatDate($('#start-date2').val()); // reformatting the dates & times
   var new_eDate = formatDate($('#end-date2').val());
   var new_sTime = formatTime($('#start-time2').val());
@@ -429,5 +479,77 @@ function createShift(thisEmp){
         redisplay();
     })
 };
+
+function createEmptyShift(){
+  var new_sDate = formatDate($('#start-date3').val()); // reformatting the dates & times
+  var new_eDate = formatDate($('#end-date3').val());
+  var new_sTime = formatTime($('#start-time3').val());
+  var new_eTime = formatTime($('#end-time3').val());
+  var new_job = $('#jobCode3').val();
+  var new_loc = $('#locCode3').val();
+  fetch('./api/create_empty_shift.php', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    body: $.param({
+      sDate: new_sDate,
+      eDate: new_eDate,
+      sTime: new_sTime, // POST data
+      eTime: new_eTime,
+      modID: payload["id"],
+      job: new_job,
+      loc: new_loc
+    })
+      }).then( function() {
+        redisplay();
+    })
+};
+
+function populateBlankShiftDropdowns(el1, el2){
+  getLocations(el2);
+  getJobs(el1);
+}
+
+function getLocations(el){
+  fetch('./api/get_locations.php', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: $.param({
+        
+      })
+        }).then(function (response) {
+          response.json().then(function (data) {
+            document.getElementById(el).options.length = 0; //reset the dropdown       
+            data.forEach(function (location) {
+              $('#'+el).append(new Option(location["location_name"], location["location_id"]));
+            });
+  })});
+}
+
+function getJobs(el){
+  fetch('./api/get_jobs.php', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: $.param({
+
+      })
+        }).then(function (response) {
+          response.json().then(function (data) {
+            document.getElementById(el).options.length = 0; //reset the dropdown       
+            data.forEach(function (position) {
+              $('#'+el).append(new Option(position["Position_"], position["JobCode"]));
+            });
+  })});
+
+}
+
+  function showModal(){
+    $("#dialog-confirm3").dialog("open");
+  }
     </script>    
 </html>
