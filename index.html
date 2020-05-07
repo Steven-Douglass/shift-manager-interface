@@ -137,10 +137,11 @@
     var calendar;
     var currentEvent;
     var currentEmp;
-    var urlParams = new URLSearchParams(window.location.search);
-    let depID = urlParams.get("managerID");
-    var payload = KJUR.jws.JWS.readSafeJSONString(b64utoutf8(depID.split(".")[1])); //jwt decode
-    console.log(payload["deptId"]);
+    //var urlParams = new URLSearchParams(window.location.search);
+    //let depID = urlParams.get("managerID");
+    //var payload = KJUR.jws.JWS.readSafeJSONString(b64utoutf8(depID.split(".")[1])); //jwt decode
+    //console.log(payload["deptId"]);
+    var payload = {"deptId": 104120, "id":2}
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
 
