@@ -9,7 +9,7 @@
     "@fullcalendar/resource-common": "^4.4.0",
     "@fullcalendar/resource-timeline": "^4.4.0",
     "@fullcalendar/timeline": "^4.4.0",
-    "moment": "^2.24.0"
+    "moment": "^2.29.2"
   },
   "devDependencies": {},
   "scripts": {
